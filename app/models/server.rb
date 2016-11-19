@@ -1,4 +1,4 @@
-class Server
+class Server < BaseModel
   include ActiveModel::Model
   extend ActiveModel::Naming
   include ActiveModel::Validations

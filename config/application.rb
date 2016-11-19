@@ -30,5 +30,14 @@ module Maxjsonapi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+    config.middleware.insert_before(Rack::Runtime, Rack::ReverseProxy) do
+      reverse_proxy_options preserve_host: true
+      reverse_proxy '/variables', "http://#{ENV['MAXSCALE_MAXINFO_IP_PORT']}/variables"
+      reverse_proxy '/status', "http://#{ENV['MAXSCALE_MAXINFO_IP_PORT']}/status"
+      reverse_proxy '/modules', "http://#{ENV['MAXSCALE_MAXINFO_IP_PORT']}/modules"
+      reverse_proxy '/sessions', "http://#{ENV['MAXSCALE_MAXINFO_IP_PORT']}/sessions"
+      reverse_proxy '/event/times', "http://#{ENV['MAXSCALE_MAXINFO_IP_PORT']}/event/times"
+      reverse_proxy '/clients', "http://#{ENV['MAXSCALE_MAXINFO_IP_PORT']}/clients"
+    end
   end
 end
