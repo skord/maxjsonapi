@@ -8,9 +8,9 @@ class Server < BaseModel
                 :repl_depth, :number_of_connections, :current_no_of_conns,
                 :current_no_of_operations, :errors
 
-  validates :server, presence: true, format: {with: /\A[A-Za-z0-9\.]{1,}\z/}
-  validates :name, presence: true, format: {with: /\A[A-Za-z0-9\.]{1,}\z/}
-  validates :port, presence: true, numericality: {integer: true, greater_than_or_equal_to: 1024, less_than_or_equal_to: 65535}
+  validates :server, format: {with: /\A[A-Za-z0-9\.]{1,}\z/, message: "server may only contain alpha-numeric characters and periods"}
+  validates :name, format: {with: /\A[A-Za-z0-9]{1,}\z/, message: "name may only contain alpha-numeric characters"}
+  validates :port, numericality: {only_integer: true, greater_than_or_equal_to: 1024, less_than_or_equal_to: 65535}
   
   def initialize(attributes={})
     super
@@ -34,12 +34,16 @@ class Server < BaseModel
   end
 
   def save
-    cmd = IO.popen("maxadmin create server #{@name} #{@server} #{@port}").read
-    if cmd =~ /already exists/
-      @errors.add(:base, "server already exists")
+    if self.valid?
+      cmd = IO.popen("maxadmin create server #{@name} #{@server} #{@port}").read
+      if cmd =~ /already exists/
+        @errors.add(:base, "server already exists")
+        return false
+      elsif cmd =~ /Created server/
+        return true
+      end
+    else
       return false
-    elsif cmd =~ /Created server/
-      return true
     end
   end
 

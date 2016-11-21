@@ -10,7 +10,7 @@ ENV BASH_ENV=/etc/scl_enable \
 
 ADD Gemfile Gemfile.lock /opt/maxapi/
 WORKDIR /opt/maxapi
-RUN bash -c bundle install
+RUN bash -c 'bundle config build.nokogiri --use-system-libraries && bundle install'
 ADD . /opt/maxapi
 EXPOSE 9292
 CMD ["bash","-c","rails","server"]

@@ -1,2 +1,3 @@
 unset BASH_ENV PROMPT_COMMAND ENV
-source scl_source enable rh-ruby23 rh-nodejs4
+source scl_source enable rh-ruby23  
+
