@@ -47,6 +47,26 @@ class Server < BaseModel
     end
   end
 
+  def update(attributes)
+    self.server = attributes[:server]
+    self.port = attributes[:port]
+    if self.valid?
+      cmd = IO.popen("maxadmin alter server #{self.id} address=#{attributes[:server]} port=#{attributes[:port]}").read
+      return true
+    else
+      return false
+    end
+  end
+
+  def destroy
+    destruction = IO.popen("maxadmin destroy server #{self.id}").read
+    if destruction =~ /Destroyed server/
+      return true
+    else 
+      return false
+    end
+  end
+
   private
   def normalize_name(name)
     if name.present? && name.match(/\AServer [[:alnum:]]{1,} \(.*\)\z/)

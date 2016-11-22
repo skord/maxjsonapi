@@ -23,11 +23,9 @@ class MaxscaleService < BaseModel
     self.all.select {|x| x.name == name}.first
   end
 
-  def self.where(query_hash)
-    result = []
-    sets = query_hash.collect {|k,v| self.all.select {|x| x.send(k.to_s) == v}}
-    sets.inject(:&)
+  def servers
+    keys  = backend_databases.collect {|x| x.split(" ",2).collect {|y| y.split(":")}.flatten}
+    keys.collect {|x| Server.all.select {|y| y.id == x[0] && y.port == x[1] && y.protocol == x[3].strip}}.flatten
   end
-
 end
 

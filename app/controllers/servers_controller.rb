@@ -19,10 +19,24 @@ class ServersController < ApplicationController
 
     if @server.save
       new_server = Server.find_by_name(@server.name)
-      render json: serialize_model(new_server), status: :created
+      render json: serialize_model(new_server), status: :created, location: new_server
     else
       render json: serialize_errors(@server.errors), status: :unprocessable_entity
     end
+  end
+  
+  # PATCH /servers
+  def update
+    if @server.update(server_attributes)
+      render json: serialize_model(Server.find(params[:id]))
+    else
+      @server.reload
+      render json: serialize_errors(@server.errors), status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @server.destroy 
   end
 
   private

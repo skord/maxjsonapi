@@ -20,6 +20,7 @@ require_relative "../lib/maxadmin/list_loader.rb"
 require_relative "../lib/maxadmin/show_loader.rb"
 require_relative "../lib/maxadmin/show_parser.rb"
 require_relative "../lib/maxadmin/show_transformer.rb"
+require_relative "../lib/maxadmin/monitor_loader.rb"
 module Maxjsonapi
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

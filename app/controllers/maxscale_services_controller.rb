@@ -5,6 +5,6 @@ class MaxscaleServicesController < ApplicationController
   end
   def show
     @maxscale_service = MaxscaleService.find(params[:id])
-    render json: serialize_model(@maxscale_service)
+    render json: serialize_model(@maxscale_service, include: ['servers'])
   end
 end
