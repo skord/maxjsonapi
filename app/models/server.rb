@@ -27,11 +27,23 @@ class Server < BaseModel
     self.all.select {|x| x.name == name}.first
   end
 
-  def self.where(query_hash)
-    result = []
-    sets = query_hash.collect {|k,v| self.all.select {|x| x.send(k.to_s) == v}}
-    sets.inject(:&)
+  def monitors
+    MaxscaleMonitor.having_server(self)
   end
+
+
+  def monitors=(new_monitors)
+    @old_monitor_ids = monitor_ids
+    @avail_monitor_ids = available_monitor_ids
+    if new_monitors.is_a?(MaxscaleMonitor)
+      new_monitors = [new_monitors]
+    end
+    @new_monitor_ids = new_monitors.collect {|x| x.id}
+    (@new_monitor_ids & @avail_monitor_ids).each {|x| add_to_monitor(x)}
+    (@old_monitor_ids - @new_monitor_ids).each {|x| remove_from_monitor(x)}
+    self.monitors
+  end
+
 
   def save
     if self.valid?
@@ -48,10 +60,12 @@ class Server < BaseModel
   end
 
   def update(attributes)
-    self.server = attributes[:server]
-    self.port = attributes[:port]
+    self.server = attributes[:attributes][:server]
+    self.port = attributes[:attributes][:port]
+    new_monitors = attributes[:relationships][:monitors][:data].collect {|x| MaxscaleMonitor.find(x['id'])}
     if self.valid?
-      cmd = IO.popen("maxadmin alter server #{self.id} address=#{attributes[:server]} port=#{attributes[:port]}").read
+      cmd = IO.popen("maxadmin alter server #{self.id} address=#{self.server} port=#{self.port}").read
+      self.monitors = new_monitors
       return true
     else
       return false
@@ -67,13 +81,45 @@ class Server < BaseModel
     end
   end
 
-  private
+  # private
   def normalize_name(name)
     if name.present? && name.match(/\AServer [[:alnum:]]{1,} \(.*\)\z/)
       return name.scan(/\AServer [[:alnum:]]{1,} \((.*)\)\z/).flatten.first
     else
       return name
     end
+  end
+
+  def add_to_monitor(monitor_id)
+    monitor = MaxscaleMonitor.find(monitor_id)
+    cmd = IO.popen("maxadmin add server #{self.id} #{monitor.id}").read
+    if cmd =~ /Added server/
+      return true
+    else
+      return false
+    end
+  end
+
+  def remove_from_monitor(monitor_id)
+    monitor = MaxscaleMonitor.find(monitor_id)
+    cmd = IO.popen("maxadmin remove server #{self.id} #{monitor.id}").read
+    if cmd =~ /Removed server/
+      return true
+    else
+      return false
+    end
+  end
+
+  def available_monitors
+    MaxscaleMonitor.without_server(self)
+  end
+
+  def available_monitor_ids
+    available_monitors.collect {|x| x.id}
+  end
+
+  def monitor_ids
+    monitors.collect {|x| x.id}
   end
 
 end

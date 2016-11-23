@@ -5,4 +5,5 @@ class ServerSerializer
                 :server_version, :node_id, :master_id, :slave_ids,
                 :repl_depth, :number_of_connections, :current_no_of_conns,
                 :current_no_of_operations
+  has_many :monitors, include_links: false, include_data: true
 end

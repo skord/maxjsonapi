@@ -17,6 +17,15 @@ class MaxscaleMonitor < BaseModel
   def self.all
     MaxAdmin::MonitorLoader.new.objects_for
   end
+
+  def self.having_server(server)
+    self.all.select {|x| x.monitored_servers.include?(server.server + ":" + server.port.to_s)}
+  end
+
+  def self.without_server(server)
+    self.all.reject {|x| x.monitored_servers.include?(server.server + ":" + server.port.to_s)}
+  end
+
   def servers
     fmtser = monitored_servers.split(",").collect {|x| x.strip.split(':')}
     fmtser.collect {|x| Server.all.select{|y| y.id == x[0] && y.port == x[1]}}.flatten

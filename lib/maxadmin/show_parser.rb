@@ -19,7 +19,7 @@ module MaxAdmin
     }
     rule(:listitems) {(tab.repeat(2) >> value.repeat.as(:value) >> newline)}
     rule(:key) {match["0-9A-Za-z \."]}
-    rule(:value) {match["[0-9A-Za-z], [:punct:]"]}
+    rule(:value) {match["[0-9A-Za-z], ~[:punct:]"]}
     rule(:space) {match[" "]}
     rule(:tabspace) {match["\t "]}
     rule(:newline) { str("\r").maybe >> str("\n") | str("\r") >> str("\n").maybe }

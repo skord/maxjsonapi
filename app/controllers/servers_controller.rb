@@ -41,12 +41,13 @@ class ServersController < ApplicationController
 
   private
     def server_params
-      params.require(:data).permit(:type, {
-        attributes: [:server, :name, :port]
-      })
+      params.require(:data).permit!#(:type, {
+        # attributes: [:server, :name, :port],
+        # relationships: {monitors: {data: []}}
+      # })
     end
     def server_attributes
-      server_params[:attributes] || {}
+      server_params || {}
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_server
