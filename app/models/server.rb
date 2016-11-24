@@ -59,10 +59,10 @@ class Server < BaseModel
     end
   end
 
-  def update(attributes)
-    self.server = attributes[:attributes][:server]
-    self.port = attributes[:attributes][:port]
-    new_monitors = attributes[:relationships][:monitors][:data].collect {|x| MaxscaleMonitor.find(x['id'])}
+  def update(attributes, monitor_attributes)
+    self.server = attributes[:server]
+    self.port = attributes[:port]
+    new_monitors = monitor_attributes.collect {|x| MaxscaleMonitor.find(x['id'])}
     if self.valid?
       cmd = IO.popen("maxadmin alter server #{self.id} address=#{self.server} port=#{self.port}").read
       self.monitors = new_monitors
