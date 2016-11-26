@@ -1,0 +1,9 @@
+{
+  "name": "maxpanel-ember",
+  "dependencies": {
+    "ember": "~2.9.0",
+    "ember-cli-shims": "0.1.3",
+    "ember-qunit-notifications": "0.1.0",
+    "semantic-ui": "^2.2.6"
+  }
+}

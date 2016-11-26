@@ -1,0 +1,20 @@
+<table class="ui bordered table">
+  <thead>
+    <tr>
+      <th>Variable Name</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each model as |variable|}}
+      <tr>
+        <td>{{variable.name}}</td>
+        <td>{{variable.value}}</td>
+      </tr>
+    {{/each}}
+
+  </tbody>
+  <tfoot>
+
+  </tfoot>
+</table>

@@ -1,0 +1,26 @@
+<table class="ui bordered table">
+  <thead>
+    <tr>
+      <th>Module Name</th>
+      <th>Module Type</th>
+      <th>Version</th>
+      <th>API Version</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each model as |module|}}
+      <tr class={{ listenerRowState module.status }}>
+        <td>{{module.name}}</td>
+        <td>{{module.type}}</td>
+        <td>{{module.version}}</td>
+        <td>{{module.apiversion}}</td>
+        <td class={{ cellstate module.status }}>{{module.status}}</td>
+      </tr>
+    {{/each}}
+
+  </tbody>
+  <tfoot>
+
+  </tfoot>
+</table>

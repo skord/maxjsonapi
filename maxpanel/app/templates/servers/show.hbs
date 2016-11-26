@@ -1,0 +1,103 @@
+<div class="ui breadcrumb">
+  {{#link-to "servers.index" class="section"}}
+    Servers
+  {{/link-to}}
+  <span class="divider"> / </span>
+  <div class="section active">{{model.server}}</div>
+</div>
+
+<table class="ui definition table">
+  <thead>
+    <tr>
+      <th class="four wide"></th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>{{model.name}}</td>
+    </tr>
+    <tr>
+      <td>Address</td>
+      <td>{{model.server}}</td>
+    </tr>
+    <tr>
+      <td>Status</td>
+      <td class={{cellstate model.status}}>{{model.status}}</td>
+    </tr>
+    <tr>
+      <td>Protocol</td>
+      <td>{{model.protocol}}</td>
+    </tr>
+    <tr>
+      <td>Port</td>
+      <td>{{model.port}}</td>
+    </tr>
+    <tr>
+      <td>Server Version</td>
+      <td>{{model.serverVersion}}</td>
+    </tr>
+    <tr>
+      <td>Node ID</td>
+      <td>{{model.nodeId}}</td>
+    </tr>
+    <tr>
+      <td>Master ID</td>
+      <td>{{model.masterId}}</td>
+    </tr>
+    <tr>
+      <td>Slave Ids</td>
+      <td>{{model.slaveIds}}</td>
+    </tr>
+    <tr>
+      <td>Repl Depth</td>
+      <td>{{model.replDepth}}</td>
+    </tr>
+    <tr>
+      <td>Current Number of Connections</td>
+      <td>{{model.currentNoOfConns}}</td>
+    </tr>
+    <tr>
+      <td>Current Number of Operations</td>
+      <td>{{model.currentNoOfOperations}}</td>
+    </tr>
+    <tr>
+      <td>Total Connections</td>
+      <td>{{model.numberOfConnections}}</td>
+    </tr>
+    <tr>
+      <td>Monitors</td>
+      <td>
+        {{#each model.monitors as |monitor|}}
+        {{#link-to "monitors.show" monitor}}{{monitor.id}}{{/link-to}}
+        {{/each}}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+{{#link-to 'servers.edit' model }}<div class='ui button'>Edit</div>{{/link-to}}
+
+<div class="ui button" {{action 'openModal' 'deleteserver'}}>
+  Retire
+</div>
+{{#ui-modal name="deleteserver" class="deleteserver" onApprove=(action 'approveDeleteModal') onDeny=(action 'cancelModal')}}
+  <i class="close icon"></i>
+  <div class="header">
+    Delete Server
+  </div>
+  <div class="content">
+    Are you absolutely sure you want to delete this server from maxscale?
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">
+      Nope
+    </div>
+    <div class="ui approve red right labeled icon button">
+      Delete
+      <i class="warning sign icon"></i>
+    </div>
+  </div>
+{{/ui-modal}}

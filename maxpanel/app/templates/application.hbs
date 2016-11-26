@@ -1,0 +1,17 @@
+<div class='ui fixed blue inverted menu'>
+  <div class='item'>
+    MaxPanel
+  </div>
+</div>
+
+<div id="main-content" class='ui grid container'>
+  <div class='four wide column'>
+    {{maxpanel-sidebar}}
+  </div>
+  <div class='twelve wide column'>
+
+    {{outlet}}
+    {{loading-slider isLoading=loading duration=250}}
+
+  </div>
+</div>

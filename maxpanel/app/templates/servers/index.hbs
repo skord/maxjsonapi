@@ -1,0 +1,28 @@
+<table class="ui table bordered">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Current Connections</th>
+      <th>Total Connections</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each model as |server|}}
+      <tr class={{ listenerRowState server.status}}>
+        <td>{{server.name}}</td>
+        <td>{{#link-to "servers.show" server.id}}{{server.server}}:{{server.port}}{{/link-to}}</td>
+        <td>{{server.currentNoOfConns}}</td>
+        <td>{{server.numberOfConnections}}</td>
+        <td class={{cellstate server.status}}>{{server.status}}</td>
+      </tr>
+    {{/each}}
+
+  </tbody>
+  <tfoot>
+
+  </tfoot>
+</table>
+
+{{#link-to "servers.new" class="ui primary button"}}New Server{{/link-to}}

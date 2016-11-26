@@ -1,0 +1,23 @@
+<table class="ui bordered table">
+  <thead>
+    <tr>
+      <th>Service Name</th>
+      <th>Protocol Module</th>
+      <th>Address</th>
+      <th>Port</th>
+      <th>State</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each model as |listener|}}
+      <tr class={{ listenerRowState listener.state }}>
+        <td>{{listener.serviceName}}</td>
+        <td>{{listener.protocolModule}}</td>
+        <td>{{listener.address}}</td>
+        <td>{{listener.port}}</td>
+        <td class="{{cellstate listener.state}}">{{listener.state}}</td>
+      </tr>
+    {{/each}}
+
+  </tbody>
+</table>

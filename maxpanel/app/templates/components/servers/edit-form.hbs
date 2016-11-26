@@ -1,0 +1,28 @@
+<form {{action "save" on="submit"}} class="ui form">
+  {{#if inError}}
+  <div class="ui negative message">
+    <b>{{errorMessage}}</b>
+    <ul>
+      {{#each model.errors as |error|}}
+      <li>
+        {{error.attribute}}: {{error.message}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/if}}
+  <div class="field">
+    <label>Server Name</label>
+    {{input value=model.name}}
+  </div>
+  <div class="field">
+    <label>Address</label>
+    {{input value=model.server}}
+  </div>
+  <div class="field">
+    <label>TCP Port</label>
+    {{input value=model.port placeholder="3306"}}
+  </div>
+  <input type="submit" value="Save" class="ui button primary"/>
+  <button {{action "cancel"}} class="ui button">Cancel</button>
+</form>

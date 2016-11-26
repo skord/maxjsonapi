@@ -1,0 +1,81 @@
+<h2>Monitor: {{model.name}}</h2>
+<table class="ui definition table">
+  <thead>
+    <tr>
+      <th class="four wide"></th>
+      <th class="twelve wide">Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>State</td>
+      <td class={{cellstate model.state}}>{{model.state}}</td>
+    </tr>
+    <tr>
+      <td>
+        Sampling Interval
+      </td>
+      <td>
+        {{model.samplingInterval}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Connect Timeout
+      </td>
+      <td>
+        {{model.connectTimeout}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Read Timeout
+      </td>
+      <td>
+        {{model.readTimeout}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Write Timeout
+      </td>
+      <td>
+        {{model.writeTimeout}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Monitored Servers
+      </td>
+      <td>
+      {{#each model.servers as |s|}}{{#link-to 'servers.show' s.id}}{{s.id}}:{{s.port}}{{/link-to}} {{/each}} 
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Maxscale Monitor ID
+      </td>
+      <td>
+        {{model.maxscaleMonitorid}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Replication Lag
+      </td>
+      <td>
+        {{model.replicationLag}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Detect Stale Master
+      </td>
+      <td>
+        {{model.detectStaleMaster}}
+      </td>
+    </tr>
+
+
+  </tbody>
+</table>
