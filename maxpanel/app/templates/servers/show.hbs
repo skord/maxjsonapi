@@ -74,6 +74,14 @@
         {{/each}}
       </td>
     </tr>
+    <tr>
+      <td>Services</td>
+      <td>
+        {{#each model.services as |service|}}
+        {{#link-to "services.show" service}}{{service.id}}{{/link-to}}
+        {{/each}}
+      </td>
+    </tr>
   </tbody>
 </table>
 

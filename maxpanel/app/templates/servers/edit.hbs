@@ -27,8 +27,13 @@
       {{input type="checkbox" checked=isSelected}}
       <label>{{monitor.id}}</label>
     {{/multiselect-checkboxes}}
-
-    <!-- {{multiselect-checkboxes options=allMonitors labelProperty='id' selection=model.monitors}} -->
+  </div>
+  <div class="field">
+    <label>Services</label>
+    {{#multiselect-checkboxes tagName="div" options=allServices selection=model.services as |service isSelected|}}
+    {{input type="checkbox" checked=isSelected}}
+    <label>{{service.id}}</label>
+    {{/multiselect-checkboxes}}
   </div>
   <input type="submit" value="Save" class="ui button primary"/>
   <button {{action "cancel" }} class="ui button">Cancel</button>

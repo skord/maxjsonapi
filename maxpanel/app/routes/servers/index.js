@@ -10,7 +10,7 @@ export default Ember.Route.extend({
   },
   startRefreshing: function() {
     this.set('refreshing', true);
-    Ember.run.later(this, this.refresh, 2000);
+    Ember.run.later(this, this.refresh, 5000);
   },
   refresh: function() {
     if (!this.get('refreshing')) {
@@ -21,7 +21,7 @@ export default Ember.Route.extend({
         return this.transitionTo("error");
       });
 
-      Ember.run.later(this, this.refresh, 2000);
+      Ember.run.later(this, this.refresh, 5000);
       return userPromise;
     }
   },

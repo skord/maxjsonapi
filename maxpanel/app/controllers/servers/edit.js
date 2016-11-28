@@ -5,6 +5,9 @@ export default Ember.Controller.extend({
   allMonitors: Ember.computed(function(){
     return this.store.findAll('monitor');
   }),
+  allServices: Ember.computed(function(){
+    return this.store.findAll('service');
+  }),
   inError: false,
   isValid: Ember.computed(
     'model.name',

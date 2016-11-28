@@ -14,5 +14,6 @@ export default DS.Model.extend({
   numberOfConnections: DS.attr('number'),
   currentNoOfConns: DS.attr('number'),
   currentNoOfOperations: DS.attr('number'),
-  monitors: DS.hasMany('monitor')
+  monitors: DS.hasMany('monitor'),
+  services: DS.hasMany('service')
 });
