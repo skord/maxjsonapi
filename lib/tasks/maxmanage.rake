@@ -1,7 +1,7 @@
 require 'fileutils'
 
 PACKAGENAME = "maxmanage"
-VERSION = "0.1.5"
+VERSION = "0.1.6"
 TRAVELING_RUBY_VERSION = "20150715-2.2.2"
 
 
@@ -47,8 +47,27 @@ namespace :maxmanage do
     asset = gh.upload_asset(release[:url], "maxmanage-#{VERSION}-linux-x86_64.tar.gz")
   end
 
-  desc "Build and push to github and dockerhub, tag and release."
-  task release: [:environment, :clean, :package, :docker_build, :docker_push, :tag_release]
+  desc "Pre-release build"
+  task prerelease: [:environment, :clean, :package, :docker_build] do
+    g = Git.open(".")
+    if g.branch.name != 'master'
+      abort "You're not on master you knucklehead"
+    end
+    origin = Git.ls_remote(g.remote('origin'))
+    tags = origin["tags"].keys
+    ver_check = "v#{VERSION}"
+    if tags.include?(ver_check)
+      abort "Remote already has a tag for this version. Bump version before proceeding"
+    end
+    g.status.changed.each do |file|
+      g.add(file[1].path)
+    end
+    g.commit_all("Auto commit for release v#{VERSION}")
+    g.push(g.remote('origin'))
+  end
+
+  desc "docker push and github tag & upload"
+  task release: [:environment, :docker_push, :tag_release]
 
   desc "Docker Image Build"
   task docker_build: :environment do
