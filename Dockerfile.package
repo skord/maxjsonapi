@@ -11,4 +11,4 @@ ENV RAILS_ENV=production
 EXPOSE 9292
 COPY packaging/maxadminfile /root/.maxadmin
 CMD "./maxmanage"
-HEALTHCHECK CMD curl --fail http://localhost:9292/monitors || exit 1
+HEALTHCHECK CMD curl --fail http://localhost:9292/health_check || exit 1
