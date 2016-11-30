@@ -66,8 +66,14 @@ namespace :maxmanage do
     g.push(g.remote('origin'))
   end
 
+  desc "fetch remote git tags"
+  task fetch_tags: :environment do
+    g = Git.open('.')
+    g.fetch(g.remote('origin'))
+  end
+
   desc "docker push and github tag & upload"
-  task release: [:environment, :docker_push, :tag_release]
+  task release: [:environment, :docker_push, :tag_release, :fetch_tags]
 
   desc "Docker Image Build"
   task docker_build: :environment do
