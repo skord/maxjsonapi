@@ -1,7 +1,7 @@
 require 'fileutils'
 
 PACKAGENAME = "maxmanage"
-VERSION = "0.1.6"
+VERSION = "0.1.7"
 TRAVELING_RUBY_VERSION = "20150715-2.2.2"
 
 
