@@ -1,7 +1,7 @@
 require 'fileutils'
 
 PACKAGENAME = "maxmanage"
-VERSION = "0.1.8"
+VERSION = "0.1.9"
 TRAVELING_RUBY_VERSION = "20150715-2.2.2"
 
 
@@ -112,6 +112,7 @@ namespace :maxmanage do
     FileUtils.cp_r(assets, "#{package_dir}/lib/app")
     be_gone = ['node_modules','dist','tmp','bower_components','coverage']
     be_gone.collect! {|dir| "#{package_dir}/lib/app/maxpanel/#{dir}"}
+    be_gone << "#{package_dir}/lib/app/tmp/pids/server.pid"
     FileUtils.rm_rf(be_gone)
     sh "mkdir #{package_dir}/lib/ruby"
     sh "tar -xzf packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-#{target}.tar.gz -C #{package_dir}/lib/ruby"
