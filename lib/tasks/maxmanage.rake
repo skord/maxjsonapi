@@ -9,7 +9,8 @@ namespace :maxmanage do
   desc "Build travelling ruby version of maxjsonapi"
   task package: [:environment,
       "packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-linux-x86_64.tar.gz",
-      "packaging/traveling-ruby-gems-#{TRAVELING_RUBY_VERSION}-linux-x86_64-nokogiri-1.6.6.2.tar.gz" 
+      "packaging/traveling-ruby-gems-#{TRAVELING_RUBY_VERSION}-linux-x86_64-nokogiri-1.6.6.2.tar.gz",
+      "ember:compile"
   ] do
     if RUBY_VERSION !~ /^2\.2\.2/
       abort "You can only 'bundle install' using Ruby 2.2.2, because that's what Traveling Ruby uses."
@@ -84,6 +85,9 @@ namespace :maxmanage do
     sh "mkdir -p #{package_dir}/lib/app"
     assets = Dir.glob('*') - ['packaging', package_dir]
     FileUtils.cp_r(assets, "#{package_dir}/lib/app")
+    be_gone = ['node_modules','dist','tmp','bower_components','coverage']
+    be_gone.collect! {|dir| "#{package_dir}/lib/app/maxpanel/#{dir}"}
+    FileUtils.rm_rf(be_gone)
     sh "mkdir #{package_dir}/lib/ruby"
     sh "tar -xzf packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-#{target}.tar.gz -C #{package_dir}/lib/ruby"
     sh "cp packaging/wrapper.sh #{package_dir}/maxmanage"
