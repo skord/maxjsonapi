@@ -36,11 +36,14 @@ namespace :maxmanage do
     sh "rm -f packaging/*.tar.gz"
   end
 
-  desc "TODO"
+  desc "Tag github release and upload file."
   task release: :environment do
     gh = Octokit::Client.new(access_token: ENV['MAXMANAGE_GITHUB_TOKEN'])
     repo = 'skord/maxjsonapi'
     ref = 'heads/master'
+    latest_commit = gh.ref(repo,ref).object.sha
+    release = gh.create_release(repo,"v#{VERSION}")
+    asset = gh.upload_asset(release[:url], "maxmanage-#{VERSION}-linux-x86_64.tar.gz")
   end
 
   desc "Docker Image Build"
