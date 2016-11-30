@@ -47,7 +47,7 @@ namespace :maxmanage do
   end
 
   desc "Build and push to github and dockerhub, tag and release."
-  task :release, [:environment, :clean, :package, :docker_build, :docker_push, :tag_release]
+  task release: [:environment, :clean, :package, :docker_build, :docker_push, :tag_release]
 
   desc "Docker Image Build"
   task docker_build: :environment do
