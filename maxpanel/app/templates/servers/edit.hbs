@@ -1,0 +1,40 @@
+<h1>Edit Server</h1>
+<form {{action "save" on="submit"}} class="ui form">
+  {{#if inError}}
+  <div class="ui negative message">
+    <b>{{errorMessage}}</b>
+    <ul>
+      {{#each model.errors as |error|}}
+      <li>
+        {{error.attribute}}: {{error.message}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/if}}
+
+  <div class="field">
+    <label>Address</label>
+    {{input value=model.server}}
+  </div>
+  <div class="field">
+    <label>TCP Port</label>
+    {{input value=model.port placeholder="3306"}}
+  </div>
+  <div class="field">
+    <label>Monitors</label>
+    {{#multiselect-checkboxes tagName='div' options=allMonitors selection=model.monitors as |monitor isSelected|}}
+      {{input type="checkbox" checked=isSelected}}
+      <label>{{monitor.id}}</label>
+    {{/multiselect-checkboxes}}
+  </div>
+  <div class="field">
+    <label>Services</label>
+    {{#multiselect-checkboxes tagName="div" options=allServices selection=model.services as |service isSelected|}}
+    {{input type="checkbox" checked=isSelected}}
+    <label>{{service.id}}</label>
+    {{/multiselect-checkboxes}}
+  </div>
+  <input type="submit" value="Save" class="ui button primary"/>
+  <button {{action "cancel" }} class="ui button">Cancel</button>
+</form>

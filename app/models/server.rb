@@ -20,7 +20,7 @@ class Server < BaseModel
   end
 
   def self.all
-    MaxAdmin::ShowLoader.new.objects_for(/Server/,Server)
+     MaxAdmin::ShowLoader.new.objects_for(/Server/,Server)
   end
 
   def self.find_by_name(name)
@@ -31,6 +31,21 @@ class Server < BaseModel
     MaxscaleMonitor.having_server(self)
   end
 
+  def services
+    MaxscaleService.having_server(self)
+  end
+
+  def services=(new_services)
+    @old_service_ids = service_ids
+    @avail_service_ids = available_service_ids
+    if new_services.is_a?(MaxscaleService)
+      new_services = [new_services]
+    end
+    @new_service_ids = new_services.collect {|x| x.id}
+    add_resources_to_server((@new_service_ids & @avail_service_ids))
+    remove_resources_from_server((@old_service_ids - @new_service_ids))
+    self.services
+  end
 
   def monitors=(new_monitors)
     @old_monitor_ids = monitor_ids
@@ -39,11 +54,10 @@ class Server < BaseModel
       new_monitors = [new_monitors]
     end
     @new_monitor_ids = new_monitors.collect {|x| x.id}
-    (@new_monitor_ids & @avail_monitor_ids).each {|x| add_to_monitor(x)}
-    (@old_monitor_ids - @new_monitor_ids).each {|x| remove_from_monitor(x)}
+    add_resources_to_server((@new_monitor_ids & @avail_monitor_ids))
+    remove_resources_from_server((@old_monitor_ids - @new_monitor_ids))
     self.monitors
   end
-
 
   def save
     if self.valid?
@@ -59,13 +73,15 @@ class Server < BaseModel
     end
   end
 
-  def update(attributes, monitor_attributes)
+  def update(attributes, monitor_attributes, services_attributes)
     self.server = attributes[:server]
     self.port = attributes[:port]
     new_monitors = monitor_attributes.collect {|x| MaxscaleMonitor.find(x['id'])}
+    new_services = services_attributes.collect {|x| MaxscaleService.find(x['id'])}
     if self.valid?
       cmd = IO.popen("maxadmin alter server #{self.id} address=#{self.server} port=#{self.port}").read
       self.monitors = new_monitors
+      self.services = new_services
       return true
     else
       return false
@@ -110,6 +126,28 @@ class Server < BaseModel
     end
   end
 
+  def add_resources_to_server(resource_ids)
+    if resource_ids.any?
+      cmd = IO.popen("maxadmin add server #{self.id} #{resource_ids.join(' ')}").read
+      if cmd =~ /Added server/
+        return true
+      else
+        return false
+      end
+    end
+  end
+
+  def remove_resources_from_server(resource_ids)
+    if resource_ids.any?
+      cmd = IO.popen("maxadmin remove server #{self.id} #{resource_ids.join(' ')}").read
+      if cmd =~ /Added server/
+        return true
+      else
+        return false
+      end
+    end
+  end
+
   def available_monitors
     MaxscaleMonitor.without_server(self)
   end
@@ -118,8 +156,20 @@ class Server < BaseModel
     available_monitors.collect {|x| x.id}
   end
 
+  def available_services
+    MaxscaleService.without_server(self)
+  end
+
+  def available_service_ids
+    available_services.collect {|x| x.id}
+  end
+
   def monitor_ids
     monitors.collect {|x| x.id}
+  end
+
+  def service_ids
+    services.collect {|x| x.id}
   end
 
 end

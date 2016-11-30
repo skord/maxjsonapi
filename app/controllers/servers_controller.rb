@@ -27,7 +27,7 @@ class ServersController < ApplicationController
   
   # PATCH /servers
   def update
-    if @server.update(server_attributes, monitor_attributes)
+    if @server.update(server_attributes, monitor_attributes, services_attributes)
       render json: serialize_model(Server.find(params[:id]))
     else
       @server.reload
@@ -43,7 +43,7 @@ class ServersController < ApplicationController
     def server_params
       params.require(:data).permit(:type, {
          attributes: [:server, :name, :port],
-         relationships: {:monitors => {:data => [:type, :id]}}
+         relationships: [{:monitors => {:data => [:type, :id]}},{:services => {:data => [:type, :id]}}]
        }
                                   )
     end
@@ -53,6 +53,10 @@ class ServersController < ApplicationController
 
     def monitor_attributes
       server_params[:relationships][:monitors][:data] || {}
+    end
+
+    def services_attributes
+      server_params[:relationships][:services][:data] || {}
     end
 
     # Use callbacks to share common setup or constraints between actions.

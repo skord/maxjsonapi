@@ -1,0 +1,30 @@
+{{#if isShowingGraph}}
+<div class="ui button" {{action "toggleGraph"}}>
+  Table
+</div>
+{{high-charts chartOptions=chartOptions content=chartData theme=theme}}
+{{/if}}
+{{#if isShowingTable}}
+<div class="ui button" {{action "toggleGraph"}}>
+  Graph
+</div>
+
+<table class="ui bordered table">
+  <thead>
+    <tr>
+      <th>Duration</th>
+      <th>No. Events Queued</th>
+      <th>No. Events Executed</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each model as |event|}}
+      <tr>
+        <td>{{event.duration}}</td>
+        <td>{{event.queued}}</td>
+        <td>{{event.executed}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+{{/if}}

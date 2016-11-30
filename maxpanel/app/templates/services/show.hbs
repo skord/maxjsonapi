@@ -1,0 +1,56 @@
+<div class="ui breadcrumb">
+  {{#link-to "services.index" class="section"}}
+    Services
+  {{/link-to}}
+  <span class="divider"> / </span>
+  <div class="section active">{{model.service}}</div>
+
+</div>
+
+<table class="ui definition table">
+  <thead>
+    <tr>
+      <th class='four wide'></th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Service</td>
+      <td>{{model.service}}</td>
+    </tr>
+    <tr>
+      <td>Router</td>
+      <td>{{model.router}}</td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td>{{model.state}}</td>
+    </tr>
+    <tr>
+      <td>Started</td>
+      <td>{{model.started}}</td>
+    </tr>
+    <tr>
+      <td>Root User Access</td>
+      <td>{{model.rootUserAccess}}</td>
+    </tr>
+    <tr>
+      <td>Backend Databases</td>
+      <td>{{#each model.servers as |s|}}{{#link-to 'servers.show' s.id}}{{s.id}}:{{s.port}}{{/link-to}} {{/each}}</td>
+    </tr>
+    <tr>
+      <td>Users Data</td>
+      <td>{{model.usersData}}</td>
+    </tr>
+    <tr>
+      <td>Currently Connected</td>
+      <td>{{model.currentlyConnected}}</td>
+    </tr>
+    <tr>
+      <td>Total Connections</td>
+      <td>{{model.totalConnections}}</td>
+    </tr>
+  </tbody>
+
+</table>

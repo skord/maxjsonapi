@@ -15,3 +15,8 @@
 
 # Ignore Byebug command history file.
 .byebug_history
+
+# Packaging/build items
+/*.tar.gz
+/packaging/*.tar.gz
+/packaging/vendor

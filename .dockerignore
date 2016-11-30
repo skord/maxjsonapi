@@ -1,0 +1,9 @@
+maxpanel/dist
+maxpanel/tmp
+maxpanel/node_modules
+maxpanel/bower_components
+maxpanel/.sass-cache
+maxpanel/connect.lock
+maxpanel/coverage/*
+maxpanel/*.log
+packaging/*.tar.gz

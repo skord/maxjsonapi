@@ -21,6 +21,7 @@ gem 'rack-reverse-proxy', require: "rack/reverse_proxy"
 gem 'parslet'
 gem 'jsonapi-serializers'
 gem 'nokogiri', '1.6.6.2'
+gem 'ember-cli-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -30,6 +31,7 @@ end
 
 group :development do
   gem 'listen', '~> 3.0.5'
+  gem 'octokit'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
