@@ -2,7 +2,8 @@ module MaxAdmin
   module Command
 
     def show_all(klass)
-      IO.popen("maxadmin show #{substr_all(klass)}").read
+      line= Cocaine::CommandLine.new("maxadmin show #{substr_all(klass)}")
+      line.run
     end
 
     def show_one(klass)

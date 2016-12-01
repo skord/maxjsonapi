@@ -1,7 +1,7 @@
 require 'fileutils'
 
 PACKAGENAME = "maxmanage"
-VERSION = "0.1.9"
+VERSION = "0.1.10"
 TRAVELING_RUBY_VERSION = "20150715-2.2.2"
 
 
@@ -10,6 +10,8 @@ namespace :maxmanage do
   task package: [:environment,
       "packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-linux-x86_64.tar.gz",
       "packaging/traveling-ruby-gems-#{TRAVELING_RUBY_VERSION}-linux-x86_64-nokogiri-1.6.6.2.tar.gz",
+      "packaging/traveling-ruby-gems-#{TRAVELING_RUBY_VERSION}-linux-x86_64-posix-spawn-0.3.9.tar.gz",
+      "packaging/traveling-ruby-gems-#{TRAVELING_RUBY_VERSION}-linux-x86_64-sqlite3-1.3.10.tar.gz",
       "ember:compile"
   ] do
     if RUBY_VERSION !~ /^2\.2\.2/
@@ -103,6 +105,14 @@ namespace :maxmanage do
     download_native_extension("linux-x86_64","nokogiri-1.6.6.2")
   end
 
+  file "packaging/traveling-ruby-gems-#{TRAVELING_RUBY_VERSION}-linux-x86_64-posix-spawn-0.3.9.tar.gz" do
+    download_native_extension("linux-x86_64","posix-spawn-0.3.9")
+  end
+
+  file "packaging/traveling-ruby-gems-#{TRAVELING_RUBY_VERSION}-linux-x86_64-sqlite3-1.3.10.tar.gz" do
+    download_native_extension("linux-x86_64","sqlite3-1.3.10")
+  end
+
   def create_package(target)
     package_dir = "#{PACKAGENAME}-#{VERSION}-#{target}"
     sh "rm -rf #{package_dir}"
@@ -113,6 +123,9 @@ namespace :maxmanage do
     be_gone = ['node_modules','dist','tmp','bower_components','coverage']
     be_gone.collect! {|dir| "#{package_dir}/lib/app/maxpanel/#{dir}"}
     be_gone << "#{package_dir}/lib/app/tmp/pids/server.pid"
+    be_gone << "#{package_dir}/lib/app/db/development.sqlite3"
+    be_gone << "#{package_dir}/lib/app/db/test.sqlite3"
+    be_gone << "#{package_dir}/lib/app/db/production.sqlite3"
     FileUtils.rm_rf(be_gone)
     sh "mkdir #{package_dir}/lib/ruby"
     sh "tar -xzf packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-#{target}.tar.gz -C #{package_dir}/lib/ruby"
@@ -123,6 +136,8 @@ namespace :maxmanage do
     sh "mkdir #{package_dir}/lib/vendor/.bundle"
     sh "cp packaging/bundler-config #{package_dir}/lib/vendor/.bundle/config"
     sh "tar -xzf packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-#{target}-nokogiri-1.6.6.2.tar.gz -C #{package_dir}/lib/vendor/ruby"
+    sh "tar -xzf packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-#{target}-posix-spawn-0.3.9.tar.gz -C #{package_dir}/lib/vendor/ruby"
+    sh "tar -xzf packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-#{target}-sqlite3-1.3.10.tar.gz -C #{package_dir}/lib/vendor/ruby"
     if !ENV['DIR_ONLY']
       sh "tar -czf #{package_dir}.tar.gz #{package_dir}"
       sh "rm -rf #{package_dir}"

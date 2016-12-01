@@ -20,3 +20,5 @@
 /*.tar.gz
 /packaging/*.tar.gz
 /packaging/vendor
+# DB
+db/*.sqlite3

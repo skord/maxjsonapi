@@ -23,6 +23,9 @@ gem 'jsonapi-serializers'
 gem 'nokogiri', '1.6.6.2'
 gem 'ember-cli-rails'
 gem 'health_check'
+gem 'sqlite3', '1.3.10'
+gem 'cocaine'
+gem 'posix-spawn', '0.3.9'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

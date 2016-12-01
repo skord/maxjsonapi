@@ -1,7 +1,7 @@
 FROM skord/maxscale:edge-consul
 RUN yum -y install centos-release-scl
 RUN yum-config-manager --enable centos-sclo-rh-testing
-RUN yum --setopt=tsflags=nodocs install --nogpgcheck -y rh-ruby23 rh-ruby23-ruby-devel rh-ruby23-rubygem-rake rh-ruby23-rubygem-bundler libxml2-devel libxslt-devel rh-nodejs4 rh-nodejs4-npm rh-nodejs4-nodejs-nodemon
+RUN yum --setopt=tsflags=nodocs install --nogpgcheck -y rh-ruby23 rh-ruby23-ruby-devel rh-ruby23-rubygem-rake rh-ruby23-rubygem-bundler libxml2-devel libxslt-devel rh-nodejs4 rh-nodejs4-npm rh-nodejs4-nodejs-nodemon sqlite-devel
 RUN yum clean all -y
 COPY build/scl_enable /etc/scl_enable
 COPY build/maxadminfile /root/.maxadmin

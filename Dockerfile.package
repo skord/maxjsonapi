@@ -1,7 +1,7 @@
 FROM skord/maxscale:edge
 MAINTAINER Mike Danko <michael.danko@mariadb.com>
 LABEL Description="This image is used to start the maxjsonapi interface to MariaDB Maxscale" Vendor="MariaDB Corporation" Version="1.0.7"
-ENV MAXMANAGE_VERSION=0.1.9
+ENV MAXMANAGE_VERSION=0.1.10
 ENV RAILS_LOG_TO_STDOUT=true
 COPY maxmanage-${MAXMANAGE_VERSION}-linux-x86_64.tar.gz /root/maxmanage-${MAXMANAGE_VERSION}-linux-x86_64.tar.gz
 WORKDIR /root
